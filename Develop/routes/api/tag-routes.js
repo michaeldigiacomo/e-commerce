@@ -39,14 +39,44 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   // create a new tag
+  try {
+    const data = await Tag.create(req.body);
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
+  try {
+    const data = await Tag.create(req.body, {
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 router.delete('/:id', (req, res) => {
   // delete on tag by its `id` value
+  try {
+    const data = await Tag.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!data) {
+      res.status(404).json({ message: "No data found with this ID" });
+    }
+
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;
